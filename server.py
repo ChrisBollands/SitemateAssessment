@@ -6,32 +6,33 @@ app = Flask(__name__)
 
 issues = []
 
-# Endpoint to create a new JSON object
+# Endpoint create
 @app.route('/create', methods=['POST'])
 def create():
     new_object = request.get_json()
     issues.append(new_object)
+    return jsonify({'message': 'Record created successfully'})
 
-# Endpoint to read all JSON objects
+# Endpoint read
 @app.route('/read', methods=['GET'])
 def read():
     return jsonify(issues)
 
-# Endpoint to update a JSON object by its index
+# Endpoint update
 @app.route('/update/<int:index>', methods=['PUT'])
 def update(index):
-    if index < len(issues):
-        updated_object = request.get_json()
-        issues[index] = updated_object
+    updated_issue = request.get_json()
+    if 0 <= index < len(issues):
+        issues[index] = updated_issue
+        print(issues)
         return jsonify({'message': 'Object updated successfully'})
     else:
-        return jsonify({'error': 'Invalid index'})
+        return jsonify({'error': 'Object not found'})
 
-# Endpoint to delete a JSON object by its index
-@app.route('/delete/<int:index>', methods=['DELETE'])
-def delete(index):
-    if index < len(issues):
-        del issues[index]
+
+# # Endpoint delete
+# @app.route('/delete/<int:index>', methods=['DELETE'])
+# def delete(index):
 
 if __name__ == '__main__':
     app.run(debug=True)

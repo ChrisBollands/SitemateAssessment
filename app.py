@@ -3,7 +3,16 @@ import requests, json
 # def delete():
 
 def update(): 
-    
+    rid = input('Which issue ID would you like to update?')
+    rtitle = input('Please enter a new title')
+    rdesc = input('Please enter a new description')
+    r = requests.get('http://127.0.0.1:5000/read')
+    if r.status_code == 200:
+        data = r.json()
+        data = {'id': rid, 'title': rtitle, 'desc': rdesc}
+        new = requests.put(f'http://127.0.0.1:5000/update/{rid}', json = data)
+        print(new.status_code)
+
 
 def read():
     rid = input('Please enter the record ID you want to read: ')
@@ -46,6 +55,7 @@ def main():
             read()
             # print('2')
         elif(user==3):
+            update()
             print('3')
         elif(user==4):
             print('4')
